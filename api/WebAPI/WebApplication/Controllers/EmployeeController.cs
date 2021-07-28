@@ -8,6 +8,7 @@ using WebApplication.Models;
 using System.Data;
 using System.Data.SqlClient;
 using System.Configuration;
+using System.Web;
 
 namespace WebApplication.Controllers
 {
@@ -15,7 +16,7 @@ namespace WebApplication.Controllers
     {
         public HttpResponseMessage Get()
         {
-            string query = @"select EmployeeId, EmployeeName, Departament,
+            string query = @"select EmployeeId, EmployeeName, Department,
                            convert(varchar(10),DateOfJoining,120) as DateOfJoining,
                            PhotoFileName
                            from dbo.Employee";
@@ -41,7 +42,7 @@ namespace WebApplication.Controllers
                 string query = @"insert into dbo.Employee 
                                values (
                                '" + emp.EmployeeName + @"',
-                               '" + emp.Departament + @"',
+                               '" + emp.Department + @"',
                                '" + emp.DateOfJoining + @"',
                                '" + emp.PhotoFileName + @"'
                                )";
@@ -72,7 +73,7 @@ namespace WebApplication.Controllers
             {
                 string query = @"update dbo.Employee set 
                                 EmployeeName='" + emp.EmployeeName + @"', 
-                                Departament='" + emp.Departament + @"', 
+                                Department='" + emp.Department + @"', 
                                 DateOfJoining='" + emp.DateOfJoining + @"', 
                                 PhotoFileName='" + emp.PhotoFileName + @"'
                                where EmployeeId=" + emp.EmployeeId + @" ";
@@ -124,11 +125,11 @@ namespace WebApplication.Controllers
             }
         }
 
-        [Route("api/Employee/GetAllDepartamentNames")]
+        [Route("api/Employee/GetAllDepartmentNames")]
         [HttpGet]
-        public HttpResponseMessage GetAllDepartamentNames()
+        public HttpResponseMessage GetAllDepartmentNames()
         {
-            string query = @"select DepartamentName from dbo.Departament";
+            string query = @"select DepartmentName from dbo.Department";
 
             DataTable table = new DataTable();
 
@@ -142,6 +143,27 @@ namespace WebApplication.Controllers
             }
 
             return Request.CreateResponse(HttpStatusCode.OK, table);
+        }
+
+        [Route("api/Employee/SaveFile")]
+        public string SaveFile()
+        {
+            try
+            {
+                var httpRequest = HttpContext.Current.Request;
+                var postedFile = httpRequest.Files[0];
+                string fileName = postedFile.FileName;
+                var physicalPath = HttpContext.Current.Server.MapPath("~/Photos/" + fileName);
+
+                postedFile.SaveAs(physicalPath);
+
+                return fileName;
+            }
+            catch (Exception)
+            {
+
+                return "File Not Added!";
+            }
         }
     }
 }

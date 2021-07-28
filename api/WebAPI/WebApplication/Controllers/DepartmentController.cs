@@ -11,12 +11,12 @@ using WebApplication.Models;
 
 namespace WebApplication.Controllers
 {
-    public class DepartamentController : ApiController
+    public class DepartmentController : ApiController
     {
         public HttpResponseMessage Get()
         {
-            string query = @"select DepartamentId, DepartamentName 
-                           from dbo.Departament";
+            string query = @"select DepartmentId, DepartmentName 
+                           from dbo.Department";
 
             DataTable table = new DataTable();
 
@@ -32,12 +32,12 @@ namespace WebApplication.Controllers
             return Request.CreateResponse(HttpStatusCode.OK, table);
         }
 
-        public string Post(Departament dep)
+        public string Post(Department dep)
         {
             try
             {
-                string query = @"insert into dbo.Departament 
-                               values ('"+dep.DepartamentName+ @"')";
+                string query = @"insert into dbo.Department 
+                               values ('"+dep.DepartmentName+ @"')";
 
                 DataTable table = new DataTable();
 
@@ -59,13 +59,13 @@ namespace WebApplication.Controllers
             }
         }
 
-        public string Put(Departament dep)
+        public string Put(Department dep)
         {
             try
             {
-                string query = @"update dbo.Departament 
-                               set DepartamentName='" + dep.DepartamentName + @"' 
-                               where DepartamentId=" + dep.DepartamentId + @" ";
+                string query = @"update dbo.Department 
+                               set DepartmentName='" + dep.DepartmentName + @"' 
+                               where DepartmentId=" + dep.DepartmentId + @" ";
 
                 DataTable table = new DataTable();
 
@@ -91,8 +91,8 @@ namespace WebApplication.Controllers
         {
             try
             {
-                string query = @"delete from dbo.Departament  
-                               where DepartamentId=" + id + @" ";
+                string query = @"delete from dbo.Department  
+                               where DepartmentId=" + id + @" ";
 
                 DataTable table = new DataTable();
 

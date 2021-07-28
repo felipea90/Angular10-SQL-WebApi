@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace WebApplication.Models
 {
-    public class Departament
+    public class Department
     {
-        public int DepartamentId { get; set; }
-        public string DepartamentName { get; set; }
+        public int DepartmentId { get; set; }
+        public string DepartmentName { get; set; }
 
     }
 }
