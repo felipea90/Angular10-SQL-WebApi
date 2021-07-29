@@ -1,4 +1,3 @@
-import { analyzeAndValidateNgModules } from '@angular/compiler';
 import { Component, Input, OnInit } from '@angular/core';
 import { SharedService } from 'src/app/shared.service';
 
@@ -61,7 +60,7 @@ export class AddEditEmpComponent implements OnInit {
       Department:this.Department,
       DateOfJoining:this.DateOfJoining,
       PhotoFileName:this.PhotoFileName
-            };
+    };
     this.service.updateEmployee(val).subscribe(res => {
     alert(res.toString());
     });
@@ -69,7 +68,7 @@ export class AddEditEmpComponent implements OnInit {
 
   uploadPhoto(event: any)
   {
-    const file = event.target.files[0];
+    var file = event.target.files[0];
     const formData: FormData = new FormData();
     formData.append('uploadedFile', file, file.name);
 

@@ -22,6 +22,7 @@ export class ShowEmpComponent implements OnInit {
 
   addClick()
   {
+    console.log();
     this.emp={
       EmployeeId:0,
       EmployeeName:"",
@@ -31,6 +32,7 @@ export class ShowEmpComponent implements OnInit {
     }
     this.ModalTitle="Add Employee";
     this.ActivateAddEditEmpComp=true;
+    this.refreshEmpList();
   }
 
   editClick(item:any)
@@ -39,13 +41,14 @@ export class ShowEmpComponent implements OnInit {
     this.emp=item;
     this.ModalTitle="Edit Employee";
     this.ActivateAddEditEmpComp=true;
+    this.refreshEmpList();
   }
 
   deleteClick(item:any)
   {
     if(confirm('Are you sure?!'))
     {
-      this.service.deleteDepartment(item.EmployeeId).subscribe(data => {
+      this.service.deleteEmployee(item.EmployeeId).subscribe(data => {
         alert(data.toString());
         this.refreshEmpList();
       })
