@@ -1,3 +1,4 @@
+import { analyzeAndValidateNgModules } from '@angular/compiler';
 import { Component, Input, OnInit } from '@angular/core';
 import { SharedService } from 'src/app/shared.service';
 
@@ -14,17 +15,29 @@ export class AddEditEmpComponent implements OnInit {
   Department!: string;
   DateOfJoining!: string;
   PhotoFileName!: string;
+  PhotoFilePath!: string;
+
+  DepartmentList: any=[];
 
   constructor(private service:SharedService) { }
 
   ngOnInit(): void {
-    this.EmployeeId=this.emp.EmployeeId;
-    this.EmployeeName=this.emp.EmployeeName;
-    this.Department=this.emp.Department;
-    this.DateOfJoining=this.emp.DateOfJoining;
-    this.PhotoFileName=this.emp.PhotoFileName;
+    this.loadDepartmentList();
   }
 
+  loadDepartmentList()
+  {
+    this.service.getAllDepartmentNames().subscribe((data: any) => {
+      this.DepartmentList=data;
+
+      this.EmployeeId=this.emp.EmployeeId;
+      this.EmployeeName=this.emp.EmployeeName;
+      this.Department=this.emp.Department;
+      this.DateOfJoining=this.emp.DateOfJoining;
+      this.PhotoFileName=this.emp.PhotoFileName;
+      this.PhotoFilePath=this.service.PhotoUrl + this.PhotoFileName;
+    });
+  }
 
   addEmployee()
   {
@@ -53,4 +66,17 @@ export class AddEditEmpComponent implements OnInit {
     alert(res.toString());
     });
   }
+
+  uploadPhoto(event: any)
+  {
+    const file = event.target.files[0];
+    const formData: FormData = new FormData();
+    formData.append('uploadedFile', file, file.name);
+
+    this.service.UploadPhoto(formData).subscribe((data: any) => {
+      this.PhotoFileName = data.toString();
+      this.PhotoFilePath = this.service.PhotoUrl + this.PhotoFileName;
+    });
+  }
+
 }
